@@ -82,7 +82,7 @@ class MainActivity : AppCompatActivity() {
             var year: Int = 0
             var month: Int = 0
             var day: Int = 0
-            if (edYear.text.isNotEmpty()){
+            if (edYear.text.isNotEmpty()) {
                 mode = 1
                 year = edYear.text.toString().toInt()
             }
@@ -97,11 +97,11 @@ class MainActivity : AppCompatActivity() {
                 month = spMonth.selectedItemPosition
                 day = edDay.text.toString().toInt()
             }
-            if (mode > 0){
+            if (mode > 0) {
                 for (i in dates) {
                     when (mode) {
                         1 ->
-                            if (year == i.year){
+                            if (year == i.year) {
                                 searchData.add(i)
                             }
                         2 ->
@@ -115,7 +115,40 @@ class MainActivity : AppCompatActivity() {
                     }
 
                 }
-                updateRecyclerView(searchData)
+                if (searchData.isEmpty()) {
+                    var firstDate = ""
+                    var secondDate = ""
+                    for (i in dates) {
+                        if (year > i.year) {
+                            if (i.month > 0) {
+                                firstDate =
+                                    "${MonthAdapter.getMonthByInt(i.month)} ${i.year}"
+                            }
+                            if (i.month > 0 && i.day > 0) {
+                                firstDate =
+                                    "${i.day} ${MonthAdapter.getMonthByInt(i.month)} ${i.year}"
+                            }
+                            break
+                        }
+                        if (year < i.year) {
+                            if (i.month > 0) {
+                                secondDate =
+                                    "${MonthAdapter.getMonthByInt(i.month)} ${i.year}"
+                            }
+                            if (i.month > 0 && i.day > 0) {
+                                secondDate =
+                                    "${i.day} ${MonthAdapter.getMonthByInt(i.month)} ${i.year}"
+                            }
+                        }
+                    }
+                    Toast.makeText(
+                        this,
+                        "Ближайшие даты $firstDate и $secondDate",
+                        Toast.LENGTH_LONG
+                    ).show()
+                } else {
+                    updateRecyclerView(searchData)
+                }
             } else {
                 updateRecyclerView(dates)
             }

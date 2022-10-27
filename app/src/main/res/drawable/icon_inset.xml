@@ -6,6 +6,6 @@
         </shape>
     </item>
     <item>
-        <inset android:drawable="@drawable/timeline" android:inset="-50pt" />
+        <inset android:drawable="@drawable/timeline" />
     </item>
 </layer-list>
