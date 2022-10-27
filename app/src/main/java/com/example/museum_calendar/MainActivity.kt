@@ -177,7 +177,7 @@ class MainActivity : AppCompatActivity() {
 
         val dialog = Dialog(context)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setCancelable(true)
+        dialog.setCancelable(false)
         dialog.setContentView(R.layout.dialog_layout)
 
         var result: Boolean = true
