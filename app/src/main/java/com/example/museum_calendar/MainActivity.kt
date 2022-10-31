@@ -18,6 +18,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.setPadding
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -65,16 +66,20 @@ class MainActivity : AppCompatActivity() {
             callingDialog(this, NO_URL_DIALOG, prefs)
         }
 
-        val cal = Calendar.getInstance()
         val spMonth: Spinner = findViewById(R.id.spMonth)
         val edDay: EditText = findViewById(R.id.edDay)
         val edYear: EditText = findViewById(R.id.edYear)
         val btnSearch: ImageButton = findViewById(R.id.btnSearch)
+        val btnUpdate: FloatingActionButton = findViewById(R.id.btnUpdate)
 
-        val months = MonthAdapter.getMonthArray()
+        val months = resources.getStringArray(R.array.month)
         val adapter = ArrayAdapter(this, R.layout.spinner_item, months)
         adapter.setDropDownViewResource(R.layout.spinner_dropdown);
         spMonth.adapter = adapter
+
+        btnUpdate.setOnClickListener {
+            loadData(prefs)
+        }
 
         btnSearch.setOnClickListener {
             searchData.clear()
@@ -141,11 +146,27 @@ class MainActivity : AppCompatActivity() {
                             }
                         }
                     }
-                    Toast.makeText(
-                        this,
-                        "Ближайшие даты $firstDate и $secondDate",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    if (secondDate.isNotEmpty() and firstDate.isNotEmpty()) {
+                        Toast.makeText(
+                            this,
+                            "Ближайшие даты $firstDate и $secondDate",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                    else if (secondDate.isNotEmpty()) {
+                        Toast.makeText(
+                            this,
+                            "Ближайшая дата $secondDate",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                    else if (firstDate.isNotEmpty()) {
+                        Toast.makeText(
+                            this,
+                            "Ближайшая дата $firstDate",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
                 } else {
                     updateRecyclerView(searchData)
                 }
@@ -191,7 +212,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun testConnection(url: String): Boolean {
-        val baseUrl: String = "$url/"
+        val baseUrl = "$url/"
         val retrofitServices: RetrofitServices =
             RetrofitClient.getClient(baseUrl).create(RetrofitServices::class.java)
 
@@ -213,7 +234,7 @@ class MainActivity : AppCompatActivity() {
         dialog.setCancelable(false)
         dialog.setContentView(R.layout.dialog_layout)
 
-        var result: Boolean = true
+        var result = true
 
         val btnAccept: TextView = dialog.findViewById(R.id.btnAccept)
         val btnCancel: TextView = dialog.findViewById(R.id.btnCancel)
@@ -247,7 +268,7 @@ class MainActivity : AppCompatActivity() {
 
                     val test = kotlinx.coroutines.MainScope()
                     test.launch {
-                        var response = false
+                        var response : Boolean
                         withContext(IO) { response = testConnection(newUrl) }
                         if (response) {
                             pbConnection.visibility = View.INVISIBLE

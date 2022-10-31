@@ -1,15 +1,11 @@
 package com.example.museum_calendar
 
 object MonthAdapter {
-    private val monthArray = arrayOf("Месяц", "Январь", "Февраль", "Март",
-        "Апрель", "Май", "Июнь", "Июль", "Август",
-        "Сентябрь", "Октябрь", "Ноябрь", "Декабрь")
+    private val monthArray = arrayOf("Месяца", "Января", "Февраля", "Марта",
+        "Апреля", "Мая", "Июня", "Июля", "Августа",
+        "Сентября", "Октября", "Ноября", "Декабря")
 
     fun getMonthByInt(month: Int) : String {
         return monthArray[month]
-    }
-
-    fun getMonthArray() : Array<String> {
-        return monthArray
     }
 }
