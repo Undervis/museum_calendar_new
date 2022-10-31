@@ -59,7 +59,6 @@ class MainActivity : AppCompatActivity() {
 
         val prefs = getSharedPreferences("url", Context.MODE_PRIVATE)
         secretKey = prefs.getString("secret_key", "museum_1901")
-        // prefs.edit().remove("server_url").apply()
         if (prefs.contains("server_url")) {
             loadData(prefs)
         } else {
@@ -124,26 +123,36 @@ class MainActivity : AppCompatActivity() {
                     var firstDate = ""
                     var secondDate = ""
                     for (i in dates) {
-                        if (year > i.year) {
+                        if (i.year < year) {
                             if (i.month > 0) {
-                                firstDate =
+                                secondDate =
                                     "${MonthAdapter.getMonthByInt(i.month)} ${i.year}"
+                                if (i.day > 0) {
+                                    secondDate =
+                                        "${i.day} ${MonthAdapter.getMonthByInt(i.month)} ${i.year}"
+                                }
                             }
-                            if (i.month > 0 && i.day > 0) {
-                                firstDate =
-                                    "${i.day} ${MonthAdapter.getMonthByInt(i.month)} ${i.year}"
+                            else {
+                                secondDate = "${i.year}"
                             }
                             break
                         }
-                        if (year < i.year) {
+
+                    }
+                    for (i in dates) {
+                        if (i.year > year) {
                             if (i.month > 0) {
-                                secondDate =
+                                firstDate =
                                     "${MonthAdapter.getMonthByInt(i.month)} ${i.year}"
+                                if (i.day > 0) {
+                                    firstDate =
+                                        "${i.day} ${MonthAdapter.getMonthByInt(i.month)} ${i.year}"
+                                }
                             }
-                            if (i.month > 0 && i.day > 0) {
-                                secondDate =
-                                    "${i.day} ${MonthAdapter.getMonthByInt(i.month)} ${i.year}"
+                            else {
+                                firstDate = "${i.year}"
                             }
+                            break
                         }
                     }
                     if (secondDate.isNotEmpty() and firstDate.isNotEmpty()) {

@@ -49,7 +49,7 @@ class RecyclerAdapter (private val data: List<DateClass>):RecyclerView.Adapter<R
             photoUrl = photoUrl.replace("\uFEFF", "")
         }
         try {
-            Picasso.get().load(photoUrl).into(holder.imPhoto)
+            Picasso.get().load(photoUrl).error(R.drawable.no_image_placer).into(holder.imPhoto)
         } catch (E: IllegalArgumentException) {
             Log.i("Picasso", E.message.toString())
         }
